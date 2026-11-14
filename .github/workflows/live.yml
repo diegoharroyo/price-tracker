@@ -1,0 +1,39 @@
+# The live demo: checks the real pages every 6 hours and publishes the dashboard to GitHub Pages.
+# Price history is kept in prices.db on the `data` branch (one commit, force-pushed).
+name: live
+on:
+  schedule: [{cron: "17 */6 * * *"}]
+  workflow_dispatch:
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+concurrency: live
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    environment: {name: github-pages, url: "${{ steps.deploy.outputs.page_url }}"}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: astral-sh/setup-uv@v6
+      - run: uv sync --locked
+      - name: restore history
+        run: |  # only a missing branch means first run; any other failure stops here instead of starting empty
+          if git ls-remote --exit-code --heads origin data; then git fetch origin data && git show origin/data:prices.db > prices.db
+          elif [ $? -eq 2 ]; then echo "first run"; else exit 1; fi
+      - run: uv run tracker.py
+      - name: save history
+        run: |
+          mkdir /tmp/data && cp prices.db /tmp/data && cd /tmp/data
+          git init -q -b data && git add prices.db
+          git -c user.name=github-actions -c user.email=41898282+github-actions[bot]@users.noreply.github.com \
+            commit -qm "price history"
+          git push -qf "https://x-access-token:${{ github.token }}@github.com/${{ github.repository }}" data
+      - run: >
+          CHECK_EVERY_MIN=360 uv run dashboard.py --static site/index.html
+          --note "Live demo: checks two practice sites built for scraping every 6 hours. Their prices rarely
+          change, so alerts are rare here; the README shows a simulated price drop. "
+      - uses: actions/upload-pages-artifact@v3
+        with: {path: site}
+      - id: deploy
+        uses: actions/deploy-pages@v4

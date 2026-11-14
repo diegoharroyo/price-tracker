@@ -1,0 +1,27 @@
+# One [[item]] per product page.
+#   below    = alert when the price reaches this or less
+#   drop_pct = alert when it falls this % or more since the last check
+# Back-in-stock alerts are always on.
+
+[[item]]
+url = "https://web-scraping.dev/product/1"
+below = 8.00
+
+[[item]]
+url = "https://web-scraping.dev/product/2"
+drop_pct = 10
+
+[[item]]
+url = "https://web-scraping.dev/product/6"
+drop_pct = 10
+
+[[item]]
+url = "https://books.toscrape.com/catalogue/a-light-in-the-attic_1000/index.html"
+drop_pct = 10
+
+[[item]]
+url = "https://books.toscrape.com/catalogue/its-only-the-himalayas_981/index.html"
+below = 40
+
+[[item]]
+url = "https://books.toscrape.com/catalogue/olio_984/index.html"

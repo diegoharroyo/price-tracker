@@ -1,0 +1,19 @@
+[project]
+name = "price-tracker"
+version = "0.1.0"
+description = "Watch product pages, keep price history, alert on Telegram when a price drops or stock comes back."
+requires-python = ">=3.11"
+dependencies = [
+    "beautifulsoup4>=4.12",
+    "flask>=3",
+    "gspread>=6",
+]
+
+[dependency-groups]
+dev = ["pytest>=8", "ruff>=0.6"]
+
+[tool.ruff]
+line-length = 120
+
+[tool.pytest.ini_options]
+pythonpath = ["."]

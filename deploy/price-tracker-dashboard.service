@@ -1,0 +1,15 @@
+# The dashboard and /health. Restarted automatically if it crashes or is killed.
+[Unit]
+Description=Price tracker dashboard
+After=network.target
+
+[Service]
+User=pricetracker
+WorkingDirectory=/opt/price-tracker
+EnvironmentFile=/opt/price-tracker/.env
+ExecStart=/opt/price-tracker/.venv/bin/python dashboard.py
+Restart=always
+RestartSec=3
+
+[Install]
+WantedBy=multi-user.target

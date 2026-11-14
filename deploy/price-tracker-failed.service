@@ -1,0 +1,9 @@
+[Unit]
+Description=Price tracker: tell the owner a run failed
+
+[Service]
+Type=oneshot
+User=pricetracker
+WorkingDirectory=/opt/price-tracker
+EnvironmentFile=/opt/price-tracker/.env
+ExecStart=/opt/price-tracker/.venv/bin/python tracker.py --notify "⚠️ Price tracker crashed on %H. Your developer can see why with: journalctl -u price-tracker -n 50"

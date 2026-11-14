@@ -1,0 +1,11 @@
+[Unit]
+Description=Run the price tracker every 30 minutes
+
+[Timer]
+OnCalendar=*:0/30
+RandomizedDelaySec=2min
+# catch up after the machine was off or asleep
+Persistent=true
+
+[Install]
+WantedBy=timers.target
