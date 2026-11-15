@@ -106,4 +106,4 @@ the tracker on `t0` then `t1` in an in-memory database. Nothing touches the netw
 
 ---
 
-Built with AI coding tools; reviewed and tested by me. MIT license.
+MIT license.
